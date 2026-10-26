@@ -33,7 +33,7 @@
       justify-content: center;
     }
 
-    /* Мобильный контейнер (чтобы красиво смотрелось и на смартфонах, и на ПК) */
+    /* Мобильный контейнер */
     .app-wrapper {
       width: 100%;
       max-width: 440px;
@@ -94,7 +94,6 @@
       margin-bottom: 22px;
     }
 
-    /* Вращающиеся лучи (God Rays) */
     .avatar-rays {
       position: absolute;
       width: 270px;
@@ -112,7 +111,6 @@
       animation: rotateRays 28s linear infinite;
     }
 
-    /* Центральное яркое свечение */
     .avatar-glow-center {
       position: absolute;
       width: 190px;
@@ -219,7 +217,7 @@
       box-shadow: 0 1px 0 #888, 0 3px 15px rgba(255, 255, 255, 0.5);
     }
 
-    /* ================= ИГРЫ (БОЛЬШИЕ КАРТОЧКИ) ================= */
+    /* ================= ИГРЫ ================= */
     .games-header {
       font-size: 24px;
       font-weight: 800;
@@ -304,7 +302,6 @@
       text-overflow: ellipsis;
     }
 
-    /* ПРОЖИМАЮЩАЯСЯ 3D-КНОПКА */
     .play-action-btn {
       background: #ffffff;
       color: #000000;
@@ -324,7 +321,6 @@
       box-shadow: 0 1px 0 #777, 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
-    /* Мягкое неоновое сияние внизу списка (без белых квадратов!) */
     .bottom-glow {
       margin-top: 35px;
       height: 60px;
@@ -382,7 +378,7 @@
   <div class="bg-light"></div>
 
   <div class="app-wrapper">
-    <!-- ВКЛАДКА 1: ГЛАВНАЯ С ЛУЧИКАМИ -->
+    <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
     <div class="tab-content active" id="tab-home">
       <div class="profile-section">
         
@@ -416,8 +412,8 @@
       <div class="games-header">Каталог игр</div>
       
       <div class="games-list">
-        <!-- Игра 1 -->
-        <div class="game-card" onclick="openGame('https://t.me/your_bot/chizhcity')">
+        <!-- Игра 1: ChizhCity -->
+        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/Chizhik')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/LDjD1QwZ/749-FAD4-D-0929-4524-8326-786-EA32-CFDAB.jpg" alt="ChizhCity">
@@ -430,8 +426,8 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 2 -->
-        <div class="game-card" onclick="openGame('https://t.me/your_bot/stackbags')">
+        <!-- Игра 2: StackBags -->
+        <div class="game-card" onclick="openGame('https://alexkhudoley20064-lang.github.io/Stack-Bags/')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/GfBXTjjs/E8278-B9-F-4-BA3-4-F1-A-B382-A53640880-F28.jpg" alt="StackBags">
@@ -444,8 +440,8 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 3 -->
-        <div class="game-card" onclick="openGame('https://t.me/your_bot/darkstore')">
+        <!-- Игра 3: DarkStore Legend -->
+        <div class="game-card" onclick="openGame('https://alexkhudoley20064-lang.github.io/darkstore_legend/')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/KjrJJBWQ/F1-ABB81-C-7-F6-F-4046-886-F-71-A4-A66-AC1-DA.jpg" alt="DarkStore Legend">
@@ -458,8 +454,8 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 4 -->
-        <div class="game-card" onclick="openGame('https://t.me/your_bot/priemka')">
+        <!-- Игра 4: Priemka Geek -->
+        <div class="game-card" onclick="openGame('dev')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/DgLWg6Y3/E30684-EF-0031-4886-98-D7-5118-C4153-D4-B.jpg" alt="Priemka Geek">
@@ -473,7 +469,7 @@
         </div>
       </div>
 
-      <!-- Мягкое свечение внизу -->
+      <!-- Мягкое свечение снизу -->
       <div class="bottom-glow"></div>
     </div>
 
@@ -527,9 +523,26 @@
 
     function openGame(url) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+
+      // Если игра в разработке
+      if (url === 'dev') {
+        if (tg?.showAlert) {
+          tg.showAlert("Игра 'Priemka Geek' пока находится в активной разработке! Скоро релиз 🤩");
+        } else {
+          alert("Игра 'Priemka Geek' пока находится в активной разработке! Скоро релиз 🤩");
+        }
+        return;
+      }
+
+      // Открытие Telegram Mini App
       if (tg?.openTelegramLink && url.startsWith('https://t.me/')) {
         tg.openTelegramLink(url);
-      } else {
+      } 
+      // Открытие внешней веб-игры (GitHub Pages)
+      else if (tg?.openLink) {
+        tg.openLink(url);
+      } 
+      else {
         window.open(url, '_blank');
       }
     }
