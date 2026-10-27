@@ -33,7 +33,6 @@
       justify-content: center;
     }
 
-    /* Мобильный контейнер */
     .app-wrapper {
       width: 100%;
       max-width: 440px;
@@ -45,7 +44,6 @@
       background: #000000;
     }
 
-    /* Фоновый рассеянный свет */
     .bg-light {
       position: fixed;
       top: 10%;
@@ -75,7 +73,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ================= ЛУЧИКИ ВОКРУГ АВАТАРА ================= */
+    /* ================= АВАТАР И ЛУЧИКИ ================= */
     .profile-section {
       display: flex;
       flex-direction: column;
@@ -217,7 +215,7 @@
       box-shadow: 0 1px 0 #888, 0 3px 15px rgba(255, 255, 255, 0.5);
     }
 
-    /* ================= ИГРЫ ================= */
+    /* ================= КАРТОЧКИ ИГР (С АДАПТИВНЫМ ТЕКСТОМ) ================= */
     .games-header {
       font-size: 24px;
       font-weight: 800;
@@ -230,18 +228,18 @@
     .games-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .game-card {
       background: var(--card-bg);
       border: 1.5px solid var(--border-color);
-      border-radius: 24px;
-      padding: 16px 18px;
+      border-radius: 22px;
+      padding: 14px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
       transition: all 0.15s ease;
       cursor: pointer;
@@ -256,16 +254,17 @@
     .game-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
       min-width: 0;
+      flex: 1; /* Занимает всё доступное место */
     }
 
     .game-icon-wrap {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
       border: 1.5px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
       overflow: hidden;
       background: #111;
       flex-shrink: 0;
@@ -282,35 +281,36 @@
       flex-direction: column;
       gap: 3px;
       min-width: 0;
+      flex: 1;
     }
 
+    /* Название теперь не обрезается, а красиво помещается */
     .game-name {
-      font-size: 17.5px;
+      font-size: 16px;
       font-weight: 800;
       color: #ffffff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.25;
+      white-space: normal;
+      word-break: normal;
     }
 
     .game-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--hint);
       font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      line-height: 1.25;
+      white-space: normal;
     }
 
     .play-action-btn {
       background: #ffffff;
       color: #000000;
       border: none;
-      padding: 10px 18px;
-      border-radius: 14px;
-      font-size: 13.5px;
+      padding: 9px 15px;
+      border-radius: 12px;
+      font-size: 13px;
       font-weight: 800;
-      box-shadow: 0 4px 0 #777, 0 0 20px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 0 #777, 0 0 18px rgba(255, 255, 255, 0.45);
       flex-shrink: 0;
       transition: all 0.1s ease;
       cursor: pointer;
@@ -322,7 +322,7 @@
     }
 
     .bottom-glow {
-      margin-top: 35px;
+      margin-top: 30px;
       height: 60px;
       background: radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%);
       filter: blur(10px);
@@ -412,11 +412,11 @@
       <div class="games-header">Каталог игр</div>
       
       <div class="games-list">
-        <!-- Игра 1: ChizhCity -->
+        <!-- Игра 1: ChizhCity (Новая иконка) -->
         <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/Chizhik')">
           <div class="game-left">
             <div class="game-icon-wrap">
-              <img src="https://i.ibb.co/LDjD1QwZ/749-FAD4-D-0929-4524-8326-786-EA32-CFDAB.jpg" alt="ChizhCity">
+              <img src="https://i.ibb.co/sdcX14kq/389448-D3-02-E6-4-CF6-82-CA-162-CC1-DC4334.jpg" alt="ChizhCity">
             </div>
             <div class="game-meta">
               <div class="game-name">ChizhCity</div>
@@ -426,8 +426,8 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 2: StackBags -->
-        <div class="game-card" onclick="openGame('https://alexkhudoley20064-lang.github.io/Stack-Bags/')">
+        <!-- Игра 2: StackBags (Новая ссылка в TG) -->
+        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/stak2')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/GfBXTjjs/E8278-B9-F-4-BA3-4-F1-A-B382-A53640880-F28.jpg" alt="StackBags">
@@ -440,8 +440,8 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 3: DarkStore Legend -->
-        <div class="game-card" onclick="openGame('https://alexkhudoley20064-lang.github.io/darkstore_legend/')">
+        <!-- Игра 3: DarkStore Legend (Новая ссылка в TG) -->
+        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/darkstore')">
           <div class="game-left">
             <div class="game-icon-wrap">
               <img src="https://i.ibb.co/KjrJJBWQ/F1-ABB81-C-7-F6-F-4046-886-F-71-A4-A66-AC1-DA.jpg" alt="DarkStore Legend">
@@ -469,7 +469,6 @@
         </div>
       </div>
 
-      <!-- Мягкое свечение снизу -->
       <div class="bottom-glow"></div>
     </div>
 
@@ -524,7 +523,6 @@
     function openGame(url) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
 
-      // Если игра в разработке
       if (url === 'dev') {
         if (tg?.showAlert) {
           tg.showAlert("Игра 'Priemka Geek' пока находится в активной разработке! Скоро релиз 🤩");
@@ -534,15 +532,11 @@
         return;
       }
 
-      // Открытие Telegram Mini App
       if (tg?.openTelegramLink && url.startsWith('https://t.me/')) {
         tg.openTelegramLink(url);
-      } 
-      // Открытие внешней веб-игры (GitHub Pages)
-      else if (tg?.openLink) {
+      } else if (tg?.openLink) {
         tg.openLink(url);
-      } 
-      else {
+      } else {
         window.open(url, '_blank');
       }
     }
