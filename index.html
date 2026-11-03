@@ -215,7 +215,7 @@
       box-shadow: 0 1px 0 #888, 0 3px 15px rgba(255, 255, 255, 0.5);
     }
 
-    /* ================= КАРТОЧКИ ИГР (С АДАПТИВНЫМ ТЕКСТОМ) ================= */
+    /* ================= КАРТОЧКИ ИГР ================= */
     .games-header {
       font-size: 24px;
       font-weight: 800;
@@ -256,7 +256,7 @@
       align-items: center;
       gap: 12px;
       min-width: 0;
-      flex: 1; /* Занимает всё доступное место */
+      flex: 1;
     }
 
     .game-icon-wrap {
@@ -284,7 +284,6 @@
       flex: 1;
     }
 
-    /* Название теперь не обрезается, а красиво помещается */
     .game-name {
       font-size: 16px;
       font-weight: 800;
@@ -412,7 +411,7 @@
       <div class="games-header">Каталог игр</div>
       
       <div class="games-list">
-        <!-- Игра 1: ChizhCity (Новая иконка) -->
+        <!-- Игра 1: ChizhCity -->
         <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/Chizhik')">
           <div class="game-left">
             <div class="game-icon-wrap">
@@ -426,7 +425,7 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 2: StackBags (Новая ссылка в TG) -->
+        <!-- Игра 2: StackBags -->
         <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/stak2')">
           <div class="game-left">
             <div class="game-icon-wrap">
@@ -440,7 +439,7 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 3: DarkStore Legend (Новая ссылка в TG) -->
+        <!-- Игра 3: DarkStore Legend -->
         <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/darkstore')">
           <div class="game-left">
             <div class="game-icon-wrap">
@@ -454,15 +453,15 @@
           <button class="play-action-btn">Играть</button>
         </div>
 
-        <!-- Игра 4: Priemka Geek -->
-        <div class="game-card" onclick="openGame('dev')">
+        <!-- Игра 4: ChizhBank Tycoon (НОВАЯ) -->
+        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/chzbnk1_0')">
           <div class="game-left">
             <div class="game-icon-wrap">
-              <img src="https://i.ibb.co/DgLWg6Y3/E30684-EF-0031-4886-98-D7-5118-C4153-D4-B.jpg" alt="Priemka Geek">
+              <img src="https://i.ibb.co/SDpWN2W9/44-BD2423-3651-4086-9550-8940-FCF5-C6-D5.jpg" alt="ChizhBank Tycoon">
             </div>
             <div class="game-meta">
-              <div class="game-name">Priemka Geek</div>
-              <div class="game-desc">пока в разработке 🤩</div>
+              <div class="game-name">ChizhBank Tycoon</div>
+              <div class="game-desc">ждёт своего Банкира! 💼</div>
             </div>
           </div>
           <button class="play-action-btn">Играть</button>
@@ -522,15 +521,6 @@
 
     function openGame(url) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
-
-      if (url === 'dev') {
-        if (tg?.showAlert) {
-          tg.showAlert("Игра 'Priemka Geek' пока находится в активной разработке! Скоро релиз 🤩");
-        } else {
-          alert("Игра 'Priemka Geek' пока находится в активной разработке! Скоро релиз 🤩");
-        }
-        return;
-      }
 
       if (tg?.openTelegramLink && url.startsWith('https://t.me/')) {
         tg.openTelegramLink(url);
