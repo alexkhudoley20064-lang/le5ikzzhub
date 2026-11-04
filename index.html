@@ -2,346 +2,805 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-  <title>Le5ikzz Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, viewport-fit=cover">
+  <title>LEKKZ GAME HUB // CYBERDREAMS</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #000000;
-      --card-bg: #0e0e0e;
-      --border-color: rgba(255, 255, 255, 0.22);
-      --text: #ffffff;
-      --hint: #9e9e9e;
-      --glow: rgba(255, 255, 255, 0.45);
-      --glow-strong: rgba(255, 255, 255, 0.85);
+      --cyber-blue-glow: #38bdf8;
+      --electric-blue: #2563eb;
+      --deep-navy: #060e26;
+      --window-border: #4d8df5;
+      --window-header: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 45%, #0f2c7a 50%, #1e40af 100%);
+      --chrome-gradient: linear-gradient(180deg, #ffffff 0%, #dbeafe 30%, #475569 50%, #ffffff 52%, #94a3b8 100%);
+      --pill-gradient: linear-gradient(180deg, rgba(56, 189, 248, 0.45) 0%, rgba(30, 64, 175, 0.65) 50%, rgba(15, 23, 42, 0.85) 100%);
+      --font-display: 'Orbitron', -apple-system, sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-hud: 'Rajdhani', sans-serif;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 15%, #17337a 0%, #081333 45%, #030818 100%);
+      color: #ffffff;
+      font-family: var(--font-hud);
       display: flex;
       justify-content: center;
     }
 
-    .app-wrapper {
+    /* ================= ФОНОВЫЕ СЛОИ И СТАТИЧЕСКИЕ ДЕТАЛИ ================= */
+    .bg-chains-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* Цепь снизу слева */
+    .chain-bottom-left {
+      position: absolute;
+      bottom: -35px;
+      left: -35px;
+      width: 190px;
+      height: 190px;
+      opacity: 0.75;
+      transform: rotate(-15deg);
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+    }
+
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #60a5fa 30%, #1e3a8a 70%, transparent 100%);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      opacity: 0.55;
+    }
+    .orb-1 { width: 55px; height: 55px; top: 120px; right: 10px; }
+    .orb-2 { width: 40px; height: 40px; bottom: 120px; left: 10px; }
+
+    /* ================= ОСНОВНОЙ КОНТЕЙНЕР (ПОДГОН 100dvh) ================= */
+    .app-screen {
       width: 100%;
       max-width: 440px;
-      min-height: 100vh;
+      height: 100%;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       position: relative;
-      padding-bottom: 95px;
-      background: #000000;
+      padding: 6px 12px 64px;
+      z-index: 5;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
     }
-
-    .bg-light {
-      position: fixed;
-      top: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .tab-content {
+    .app-screen::-webkit-scrollbar {
       display: none;
-      position: relative;
-      z-index: 1;
-      padding: 22px 16px;
-      animation: fadeIn 0.25s ease-out;
     }
 
-    .tab-content.active {
-      display: block;
+    .outer-cyber-border {
+      position: fixed;
+      inset: 4px;
+      max-width: 432px;
+      margin: 0 auto;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      border-radius: 14px;
+      pointer-events: none;
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2), inset 0 0 15px rgba(56, 189, 248, 0.1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+    .warning-ticker-bar {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: rgba(147, 197, 253, 0.85);
+      letter-spacing: 1px;
+      margin: 0 0 4px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+      flex-shrink: 0;
+    }
+
+    .tab-section {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+      gap: 6px;
+      animation: cyberFade 0.2s ease-out;
+    }
+    .tab-section.active {
+      display: flex;
+    }
+    @keyframes cyberFade {
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ================= АВАТАР И ЛУЧИКИ ================= */
-    .profile-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-top: 15px;
-    }
-
-    .avatar-halo-container {
+    /* ================= 3D ЗАГОЛОВОК (ПОВЕРХ ВСЕХ ЦЕПЕЙ, Z-INDEX: 20) ================= */
+    .hero-header-box {
+      margin-bottom: 2px;
       position: relative;
-      width: 250px;
-      height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 22px;
+      z-index: 20;
+      flex-shrink: 0;
     }
 
-    .avatar-rays {
-      position: absolute;
-      width: 270px;
-      height: 270px;
-      border-radius: 50%;
-      background: repeating-conic-gradient(
-        from 0deg,
-        rgba(255, 255, 255, 0.75) 0deg 4deg,
-        rgba(255, 255, 255, 0.15) 4deg 8deg,
-        transparent 8deg 16deg
-      );
-      -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 72%);
-      mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 72%);
-      filter: blur(1.5px);
-      animation: rotateRays 28s linear infinite;
-    }
-
-    .avatar-glow-center {
-      position: absolute;
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.3) 45%, rgba(0, 0, 0, 0) 75%);
-      filter: blur(14px);
-      animation: pulseCore 3.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes rotateRays {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes pulseCore {
-      0% { transform: scale(0.95); opacity: 0.75; }
-      100% { transform: scale(1.08); opacity: 1; }
-    }
-
-    .avatar-wrap {
-      position: relative;
-      width: 142px;
-      height: 142px;
-      border-radius: 50%;
-      border: 3px solid #ffffff;
-      box-shadow: 0 0 40px rgba(255, 255, 255, 0.95), 0 0 15px rgba(255, 255, 255, 0.7);
-      overflow: hidden;
-      background: #111;
-      z-index: 2;
-    }
-
-    .avatar-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .creator-title {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #fff;
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-      margin-bottom: 24px;
-    }
-
-    .action-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      width: 100%;
-      max-width: 290px;
-    }
-
-    .tiktok-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: #000;
-      color: #fff;
-      padding: 14px 20px;
-      border-radius: 50px;
-      font-weight: 700;
-      font-size: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-      transition: all 0.15s ease;
-      cursor: pointer;
-    }
-
-    .tiktok-btn:active {
-      transform: scale(0.96) translateY(2px);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.45);
-      background: #151515;
-    }
-
-    .tiktok-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: #fff;
-    }
-
-    .donate-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: #ffffff;
-      color: #000000;
-      padding: 14px 20px;
-      border-radius: 50px;
-      font-weight: 800;
-      font-size: 15px;
-      border: none;
-      box-shadow: 0 4px 0 #888, 0 6px 25px var(--glow-strong);
-      transition: all 0.12s ease;
-      cursor: pointer;
-    }
-
-    .donate-btn:active {
-      transform: translateY(3px) scale(0.97);
-      box-shadow: 0 1px 0 #888, 0 3px 15px rgba(255, 255, 255, 0.5);
-    }
-
-    /* ================= КАРТОЧКИ ИГР ================= */
-    .games-header {
+    .chrome-main-title {
+      font-family: var(--font-display);
       font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      background: var(--chrome-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 14px rgba(56, 189, 248, 0.75));
+      line-height: 1.05;
+      white-space: nowrap;
+      position: relative;
+      z-index: 20;
+    }
+
+    .chrome-sub-title {
+      font-family: var(--font-display);
+      font-size: 11px;
       font-weight: 800;
-      margin-bottom: 22px;
-      letter-spacing: -0.5px;
-      text-align: center;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      letter-spacing: 2px;
+      color: #93c5fd;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(56, 189, 248, 0.75);
+      margin-top: 1px;
+      position: relative;
+      z-index: 20;
     }
 
-    .games-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .game-card {
-      background: var(--card-bg);
-      border: 1.5px solid var(--border-color);
-      border-radius: 22px;
-      padding: 14px 14px;
+    /* ================= ВЕРХНИЙ БЛОК: 2 КНОПКИ СЛЕВА + АВАТАРКА СО СТАТИЧЕСКОЙ ЦЕПЬЮ СПРАВА ================= */
+    .nexus-top-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
-      transition: all 0.15s ease;
-      cursor: pointer;
-    }
-
-    .game-card:active {
-      transform: scale(0.98);
-      border-color: rgba(255, 255, 255, 0.7);
-      box-shadow: 0 0 30px var(--glow);
-    }
-
-    .game-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .game-icon-wrap {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 0 16px rgba(255, 255, 255, 0.25);
-      overflow: hidden;
-      background: #111;
+      gap: 10px;
+      margin-bottom: 4px;
+      position: relative;
       flex-shrink: 0;
     }
 
-    .game-icon-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .game-meta {
+    .pill-menu-column {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      min-width: 0;
+      gap: 8px;
       flex: 1;
+      max-width: 175px;
+      z-index: 10;
     }
 
-    .game-name {
-      font-size: 16px;
-      font-weight: 800;
+    .cyber-pill-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 22px;
+      background: var(--pill-gradient);
+      border: 1.5px solid rgba(147, 197, 253, 0.8);
+      box-shadow: 
+        0 4px 10px rgba(0, 0, 0, 0.6),
+        0 0 10px rgba(56, 189, 248, 0.4),
+        inset 0 1px 2px #ffffff;
       color: #ffffff;
-      line-height: 1.25;
-      white-space: normal;
-      word-break: normal;
-    }
-
-    .game-desc {
-      font-size: 12px;
-      color: var(--hint);
-      font-weight: 500;
-      line-height: 1.25;
-      white-space: normal;
-    }
-
-    .play-action-btn {
-      background: #ffffff;
-      color: #000000;
-      border: none;
-      padding: 9px 15px;
-      border-radius: 12px;
-      font-size: 13px;
+      font-family: var(--font-display);
+      font-size: 11px;
       font-weight: 800;
-      box-shadow: 0 4px 0 #777, 0 0 18px rgba(255, 255, 255, 0.45);
-      flex-shrink: 0;
-      transition: all 0.1s ease;
+      letter-spacing: 0.6px;
+      text-decoration: none;
       cursor: pointer;
+      overflow: hidden;
+      transition: all 0.12s ease;
     }
 
-    .game-card:active .play-action-btn {
-      transform: translateY(3px) scale(0.96);
-      box-shadow: 0 1px 0 #777, 0 0 10px rgba(255, 255, 255, 0.3);
-    }
-
-    .bottom-glow {
-      margin-top: 30px;
-      height: 60px;
-      background: radial-gradient(ellipse at center bottom, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 80%);
-      filter: blur(10px);
+    .cyber-pill-btn::before {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 10px;
+      right: 10px;
+      height: 45%;
+      border-radius: 20px 20px 4px 4px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, transparent 100%);
       pointer-events: none;
     }
 
-    /* ================= НАВИГАЦИЯ ================= */
-    .nav-bar {
+    .cyber-pill-btn:active {
+      transform: scale(0.96) translateY(2px);
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.8);
+    }
+
+    .pill-svg-icon {
+      width: 16px;
+      height: 16px;
+      fill: #ffffff;
+      filter: drop-shadow(0 0 4px #fff);
+      flex-shrink: 0;
+    }
+
+    .pill-fire-icon {
+      font-size: 15px;
+      line-height: 1;
+      filter: drop-shadow(0 0 6px #ffedd5);
+      flex-shrink: 0;
+    }
+
+    /* Сцена с аватаром и статичной цепью из chain.jpg */
+    .avatar-cyborg-stage {
+      position: relative;
+      width: 130px;
+      height: 115px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: visible;
+    }
+
+    /* СТАТИЧЕСКАЯ ЦЕПЬ ПО chain.jpg (БЕЗ АНИМАЦИИ, Z-INDEX 1 - НЕ ПЕРЕКРЫВАЕТ ЗАГОЛОВОК) */
+    .static-y2k-chain {
+      position: absolute;
+      top: -30px;
+      left: -40px;
+      width: 215px;
+      height: 185px;
+      pointer-events: none;
+      z-index: 1;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
+    }
+
+    /* Чистый круглый аватар */
+    .cyborg-avatar-bubble {
+      position: relative;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      background: #020617;
+      border: 2.5px solid #93c5fd;
+      padding: 2px;
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.95),
+        0 0 25px rgba(56, 189, 248, 0.8),
+        inset 0 0 14px rgba(255, 255, 255, 0.8);
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .cyborg-avatar-bubble img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      filter: brightness(1.05) contrast(1.1);
+      display: block;
+    }
+
+    .cyborg-avatar-bubble::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 8px;
+      right: 8px;
+      height: 42px;
+      border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* ================= 2000s ОКНА ================= */
+    .cyber-window {
+      background: rgba(6, 16, 42, 0.88);
+      border: 1.5px solid var(--window-border);
+      border-radius: 8px;
+      box-shadow: 
+        0 6px 18px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(56, 189, 248, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .window-header {
+      background: var(--window-header);
+      padding: 4px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      flex-shrink: 0;
+    }
+
+    .window-title {
+      font-family: var(--font-display);
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px #000;
+    }
+
+    .win-controls {
+      display: flex;
+      align-items: center;
+      gap: 2.5px;
+    }
+
+    .win-btn {
+      width: 12px;
+      height: 11px;
+      background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 50%, #1e40af 100%);
+      border: 1px solid #ffffff;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7.5px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    /* ================= ОКНО: "HOT GAMES" (ВЫРЕЗАННЫЙ ЧИСТЫЙ БАНКОМАТ) ================= */
+    .hot-game-window {
+      margin-bottom: 4px;
+    }
+
+    .hot-game-body {
+      padding: 6px;
+    }
+
+    .hot-game-banner {
+      position: relative;
+      width: 100%;
+      height: 145px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(147, 197, 253, 0.5);
+      background: #020716;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85);
+      cursor: pointer;
+    }
+
+    .hot-banner-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+      opacity: 0.98;
+    }
+
+    .hot-banner-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(15, 23, 42, 0.88);
+      border: 1px solid var(--cyber-blue-glow);
+      padding: 2.5px 7px;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      color: #38bdf8;
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .hot-banner-arrow {
+      position: absolute;
+      top: 45%;
+      right: 10px;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #93c5fd 0%, #2563eb 100%);
+      border: 1px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      font-size: 12px;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+      z-index: 2;
+    }
+
+    .hot-game-btn-bar {
+      width: 100%;
+      padding: 7px 10px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(3, 7, 18, 0.98) 100%);
+      border-top: 1px solid rgba(56, 189, 248, 0.5);
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 900;
+      color: #38bdf8;
+      text-align: center;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    /* ================= ДВА ОКНА: ONLINE FRIENDS + GLOBAL CHAT ================= */
+    .bottom-widgets-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 2px;
+      flex-shrink: 0;
+    }
+
+    .widget-panel-window {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Окно 1: ONLINE FRIENDS с детализированными иконками */
+    .friends-list-box {
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      flex: 1;
+    }
+
+    .friend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 5px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* ДЕТАЛИЗИРОВАННЫЕ ИКОНКИ ДРУЗЕЙ */
+    .friend-custom-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0b132b 100%);
+      border: 1.2px solid #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+      box-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+    }
+
+    .friend-custom-icon svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .friend-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .friend-nick {
+      color: #60a5fa;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 8.5px;
+      line-height: 1.1;
+    }
+
+    .friend-msg {
+      color: #94a3b8;
+      font-size: 7px;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ЕДИНАЯ СТРОКА ДЛЯ КНОПОК OK В ПРАВОМ НИЖНЕМ УГЛУ */
+    .bottom-action-align-row {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 4px 6px 6px;
+      margin-top: auto;
+    }
+
+    .friends-action-btn {
+      background: linear-gradient(180deg, #93c5fd 0%, #1d4ed8 100%);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 3px 10px;
+      border: 1px solid #fff;
+      border-radius: 3px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+      line-height: 1;
+      transition: all 0.1s ease;
+    }
+
+    .friends-action-btn:active {
+      transform: scale(0.92);
+      background: #38bdf8;
+    }
+
+    /* Окно 2: GLOBAL CHAT */
+    .winamp-mini-screen {
+      background: #020617;
+      border: 1px solid #334155;
+      padding: 4px;
+      border-radius: 3px;
+      margin-bottom: 4px;
+    }
+
+    .winamp-time-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: #38bdf8;
+      margin-bottom: 2px;
+    }
+
+    .winamp-eq-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.5px;
+      height: 14px;
+    }
+
+    .winamp-eq-bars span {
+      flex: 1;
+      background: linear-gradient(to top, #38bdf8, #ffffff);
+      border-radius: 1px;
+      animation: eqBounce 0.7s infinite alternate ease-in-out;
+    }
+    .winamp-eq-bars span:nth-child(1) { height: 35%; animation-delay: 0.1s; }
+    .winamp-eq-bars span:nth-child(2) { height: 85%; animation-delay: 0.3s; }
+    .winamp-eq-bars span:nth-child(3) { height: 50%; animation-delay: 0.15s; }
+    .winamp-eq-bars span:nth-child(4) { height: 100%; animation-delay: 0.4s; }
+    .winamp-eq-bars span:nth-child(5) { height: 45%; animation-delay: 0.25s; }
+    .winamp-eq-bars span:nth-child(6) { height: 80%; animation-delay: 0.35s; }
+    .winamp-eq-bars span:nth-child(7) { height: 65%; animation-delay: 0.18s; }
+
+    @keyframes eqBounce {
+      0% { height: 20%; }
+      100% { height: 100%; }
+    }
+
+    .chat-stream-box {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: #94a3b8;
+      line-height: 1.25;
+      padding: 3px 4px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-bottom: 2px;
+    }
+
+    .chat-row {
+      margin-bottom: 1.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .chat-user {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    /* ================= ВКЛАДКА 2: ИГРЫ (LIBRARY) — ОРИГИНАЛЬНЫЕ ОБЛОЖКИ БЕЗ ОБРЕЗКИ ================= */
+    .game-cards-matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 8px;
+    }
+
+    .cyber-game-card {
+      position: relative;
+      background: linear-gradient(180deg, #10214c 0%, #060e26 100%);
+      border: 1.5px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+      box-shadow: 
+        0 6px 16px rgba(0, 0, 0, 0.8),
+        0 0 10px rgba(56, 189, 248, 0.3),
+        inset 0 1px 2px #ffffff;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.14s ease;
+    }
+
+    .cyber-game-card:active {
+      transform: scale(0.96) translateY(2px);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.8);
+      border-color: #38bdf8;
+    }
+
+    /* КВАДРАТНАЯ РАМКА ДЛЯ СОХРАНЕНИЯ ОРИГИНАЛЬНЫХ ПРОПОРЦИЙ АВАТАРОВ БЕЗ ОБРЕЗКИ */
+    .game-thumb-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      background: #020617;
+    }
+
+    .game-thumb-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-game-title {
+      font-family: var(--font-display);
+      font-size: 11.5px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.1;
+      text-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+    }
+
+    .card-game-genre {
+      font-family: var(--font-mono);
+      font-size: 7.5px;
+      color: #94a3b8;
+    }
+
+    .card-launch-btn {
+      width: 100%;
+      background: linear-gradient(180deg, #93c5fd 0%, #2563eb 50%, #1e40af 100%);
+      border: 1px solid #ffffff;
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      padding: 6px 0;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 1px 1px #fff;
+      text-transform: uppercase;
+    }
+
+    /* РАСШИРЕННОЕ ОКНО UPDATES */
+    .updates-expanded-window {
+      margin-top: 4px;
+    }
+
+    .updates-content-box {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 6px;
+      background: radial-gradient(circle at center, rgba(37, 99, 235, 0.3) 0%, rgba(6, 16, 42, 0.95) 75%);
+      border-top: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .updates-glitch-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(56, 189, 248, 0.95), 0 0 5px #ffffff;
+      animation: updateGlow 2.5s infinite alternate;
+    }
+
+    @keyframes updateGlow {
+      0% { opacity: 0.85; transform: scale(0.98); }
+      100% { opacity: 1; transform: scale(1.02); }
+    }
+
+    .updates-sub-text {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: #93c5fd;
+      letter-spacing: 1.2px;
+    }
+
+    .downloading-footer-box {
+      padding: 6px 10px;
+      background: rgba(3, 7, 18, 0.9);
+      border: 1px solid var(--window-border);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+
+    .dl-title-row {
+      display: flex;
+      justify-content: space-between;
+      color: #38bdf8;
+      font-size: 8.5px;
+      font-weight: 700;
+    }
+
+    .dl-blocks-bar {
+      letter-spacing: 1.5px;
+      color: #38bdf8;
+      font-size: 8.5px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* ================= ФИКСИРОВАННЫЙ ДОК ================= */
+    .bottom-cyber-nav {
       position: fixed;
-      bottom: 16px;
+      bottom: 8px;
       left: 50%;
       transform: translateX(-50%);
-      width: calc(100% - 40px);
-      max-width: 390px;
-      height: 58px;
-      background: rgba(14, 14, 14, 0.88);
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 30px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.18);
+      width: calc(100% - 24px);
+      max-width: 400px;
+      height: 48px;
+      background: linear-gradient(180deg, rgba(30, 64, 175, 0.85) 0%, rgba(15, 23, 42, 0.98) 100%);
+      border: 1.5px solid #93c5fd;
+      border-radius: 28px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.95),
+        0 0 20px rgba(56, 189, 248, 0.5),
+        inset 0 1px 2px #ffffff;
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -349,132 +808,455 @@
       z-index: 100;
     }
 
-    .nav-item {
+    .nav-capsule-btn {
+      position: relative;
       flex: 1;
       height: 100%;
       background: transparent;
       border: none;
-      color: var(--hint);
-      font-size: 14.5px;
-      font-weight: 700;
-      border-radius: 25px;
+      color: #93c5fd;
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      border-radius: 22px;
       cursor: pointer;
-      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.16s ease;
     }
 
-    .nav-item.active {
-      color: #000000;
-      background: #ffffff;
-      box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+    .nav-capsule-btn.active {
+      color: #030712;
+      background: linear-gradient(180deg, #ffffff 0%, #93c5fd 50%, #38bdf8 100%);
+      border: 1px solid #ffffff;
+      box-shadow: 
+        0 3px 12px rgba(56, 189, 248, 0.8),
+        inset 0 1px 2px #ffffff;
+    }
+
+    .nav-capsule-btn.active::before {
+      content: "";
+      position: absolute;
+      top: 1px;
+      left: 10px;
+      right: 10px;
+      height: 45%;
+      border-radius: 20px 20px 4px 4px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, transparent 100%);
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-light"></div>
+  <!-- ФОНОВЫЕ ЭЛЕМЕНТЫ (ЦЕПИ И СФЕРЫ) -->
+  <div class="bg-chains-layer">
+    <svg class="chain-bottom-left" viewBox="0 0 180 180">
+      <defs>
+        <linearGradient id="chGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="35%" stop-color="#cbd5e1"/>
+          <stop offset="60%" stop-color="#334155"/>
+          <stop offset="85%" stop-color="#e2e8f0"/>
+          <stop offset="100%" stop-color="#64748b"/>
+        </linearGradient>
+      </defs>
+      <ellipse cx="30" cy="140" rx="32" ry="15" fill="none" stroke="url(#chGrad)" stroke-width="8" transform="rotate(25 30 140)"/>
+      <ellipse cx="65" cy="105" rx="32" ry="15" fill="none" stroke="url(#chGrad)" stroke-width="8" transform="rotate(-35 65 105)"/>
+      <ellipse cx="105" cy="75" rx="32" ry="15" fill="none" stroke="url(#chGrad)" stroke-width="8" transform="rotate(30 105 75)"/>
+      <ellipse cx="145" cy="45" rx="32" ry="15" fill="none" stroke="url(#chGrad)" stroke-width="8" transform="rotate(-20 145 45)"/>
+    </svg>
 
-  <div class="app-wrapper">
-    <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
-    <div class="tab-content active" id="tab-home">
-      <div class="profile-section">
-        
-        <div class="avatar-halo-container">
-          <div class="avatar-rays"></div>
-          <div class="avatar-glow-center"></div>
-          <div class="avatar-wrap">
-            <img src="https://i.ibb.co/GQh2t4qQ/IMG-3387.png" alt="Le5ikzz">
-          </div>
-        </div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+  </div>
 
-        <div class="creator-title">Игры от Le5ikzz</div>
+  <div class="outer-cyber-border"></div>
 
-        <div class="action-buttons">
-          <button class="tiktok-btn" onclick="openLink('https://www.tiktok.com/@le5ikzz')">
-            <svg viewBox="0 0 24 24">
+  <div class="app-screen">
+    <!-- ТИКЕР ПРЕДУПРЕЖДЕНИЯ -->
+    <div class="warning-ticker-bar">
+      WARNING // SYSTEM ACCESS • WARNING // SYSTEM ACCESS • WARNING // SYSTEM ACCESS
+    </div>
+
+    <!-- ================= ВКЛАДКА 1: ГЛАВНАЯ (LEKKZ GAME HUB) ================= -->
+    <main class="tab-section active" id="tab-home">
+      <!-- 3D Заголовок LEKKZ GAME HUB (Z-INDEX 20: ЦЕПЬ ПОД НИМ И НЕ ПЕРЕКРЫВАЕТ БУКВЫ) -->
+      <div class="hero-header-box">
+        <h1 class="chrome-main-title">LEKKZ GAME HUB</h1>
+        <div class="chrome-sub-title">// CYBERDREAMS</div>
+      </div>
+
+      <!-- ВЕРХНИЙ БЛОК: 2 КНОПКИ СЛЕВА + АВАТАРКА СО СТАТИЧЕСКОЙ ЦЕПЬЮ СПРАВА -->
+      <div class="nexus-top-row">
+        <!-- 2 кнопки слева: TikTok и Donate -->
+        <div class="pill-menu-column">
+          <button class="cyber-pill-btn" onclick="openLink('https://www.tiktok.com/@le5ikzz')">
+            <svg class="pill-svg-icon" viewBox="0 0 24 24">
               <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.82 4.47 6.27 6.27 0 0 0 1.86-4.47V8.78a8.18 8.18 0 0 0 4.91 1.63V6.97a4.85 4.85 0 0 1-1-.28z"/>
             </svg>
-            Мой TikTok
+            <span>[ TIKTOK ]</span>
           </button>
 
-          <button class="donate-btn" onclick="supportAuthor()">
-            Поддержать Автора 🤗
+          <button class="cyber-pill-btn" onclick="supportAuthor()">
+            <span class="pill-fire-icon">🔥</span>
+            <span>[ DONATE ]</span>
           </button>
         </div>
-      </div>
-    </div>
 
-    <!-- ВКЛАДКА 2: ИГРЫ -->
-    <div class="tab-content" id="tab-games">
-      <div class="games-header">Каталог игр</div>
-      
-      <div class="games-list">
-        <!-- Игра 1: ChizhCity -->
-        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/Chizhik')">
-          <div class="game-left">
-            <div class="game-icon-wrap">
+        <!-- Аватарка со СТАТИЧЕСКОЙ ЦЕПЬЮ ПО chain.jpg (Z-INDEX 1, НЕ ПЕРЕКРЫВАЕТ БУКВЫ) -->
+        <div class="avatar-cyborg-stage">
+          <!-- СТАТИЧЕСКАЯ ЦЕПЬ ТОЧНО КАК НА chain.jpg (БЕЗ АНИМАЦИИ) -->
+          <svg class="static-y2k-chain" viewBox="0 0 220 200">
+            <defs>
+              <linearGradient id="chRefGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="20%" stop-color="#cbd5e1"/>
+                <stop offset="45%" stop-color="#475569"/>
+                <stop offset="70%" stop-color="#ffffff"/>
+                <stop offset="85%" stop-color="#93c5fd"/>
+                <stop offset="100%" stop-color="#1e293b"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Верхнее массивное звено справа (как на chain.jpg) -->
+            <ellipse cx="160" cy="40" rx="32" ry="16" fill="none" stroke="url(#chRefGrad)" stroke-width="9" transform="rotate(-35 160 40)"/>
+            <ellipse cx="125" cy="22" rx="20" ry="10" fill="none" stroke="url(#chRefGrad)" stroke-width="6.5" transform="rotate(35 125 22)"/>
+            <ellipse cx="98" cy="12" rx="16" ry="8" fill="none" stroke="url(#chRefGrad)" stroke-width="5" transform="rotate(-20 98 12)"/>
+            
+            <!-- Основная дуговая нить цепи за аватаркой в правый угол (как на chain.jpg) -->
+            <g stroke="url(#chRefGrad)" fill="none" stroke-width="6.5">
+              <ellipse cx="30" cy="50" rx="20" ry="9" transform="rotate(25 30 50)"/>
+              <ellipse cx="52" cy="62" rx="19" ry="8" transform="rotate(-35 52 62)"/>
+              <ellipse cx="78" cy="74" rx="21" ry="9" transform="rotate(20 78 74)"/>
+              <ellipse cx="104" cy="88" rx="20" ry="8" transform="rotate(-30 104 88)"/>
+              <ellipse cx="132" cy="106" rx="22" ry="9" transform="rotate(25 132 106)"/>
+              <ellipse cx="158" cy="128" rx="21" ry="8" transform="rotate(-40 158 128)"/>
+              <ellipse cx="184" cy="154" rx="23" ry="10" transform="rotate(30 184 154)"/>
+              <ellipse cx="206" cy="180" rx="22" ry="9" transform="rotate(-25 206 180)"/>
+            </g>
+
+            <!-- Нижняя изгибающаяся цепочка (как на chain.jpg) -->
+            <g stroke="url(#chRefGrad)" fill="none" stroke-width="4.5" opacity="0.85">
+              <ellipse cx="50" cy="115" rx="14" ry="6" transform="rotate(-45 50 115)"/>
+              <ellipse cx="68" cy="132" rx="15" ry="6" transform="rotate(35 68 132)"/>
+              <ellipse cx="88" cy="148" rx="14" ry="6" transform="rotate(-30 88 148)"/>
+              <ellipse cx="110" cy="165" rx="15" ry="6" transform="rotate(25 110 165)"/>
+              <ellipse cx="130" cy="182" rx="14" ry="6" transform="rotate(-40 130 182)"/>
+            </g>
+          </svg>
+
+          <!-- Чистый аватар без ушек -->
+          <div class="cyborg-avatar-bubble">
+            <img src="https://i.ibb.co/GQh2t4qQ/IMG-3387.png" alt="Le5ikzz Avatar">
+          </div>
+        </div>
+      </div>
+
+      <!-- ОКНО: HOT GAMES (ВЫРЕЗАН ЧИСТЫЙ БАНКОМАТ ИЗ ATM.JPG БЕЗ СКРИНШОТА) -->
+      <section class="cyber-window hot-game-window">
+        <div class="window-header">
+          <div class="window-title">HOT GAMES</div>
+          <div class="win-controls">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">✕</div>
+          </div>
+        </div>
+        
+        <div class="hot-game-body">
+          <div class="hot-game-banner" onclick="openGame('https://t.me/lekkzhubBot/chzbnk1_0')">
+            <!-- Чистый банкомат из atm_clean.jpg -->
+            <img class="hot-banner-img" src="atm_clean.jpg" alt="ChizhBank ATM">
+            <div class="hot-banner-badge">FEATURED // #1</div>
+            <div class="hot-banner-arrow">❯</div>
+            <div class="hot-game-btn-bar">CHIZHBANK - PLAY NOW ▶</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ОКНА: ONLINE FRIENDS + GLOBAL CHAT -->
+      <div class="bottom-widgets-row">
+        <!-- Окно Online Friends (4 друга с детальными иконками + кнопка OK без звёздочки) -->
+        <div class="cyber-window widget-panel-window">
+          <div>
+            <div class="window-header">
+              <div class="window-title">ONLINE FRIENDS</div>
+              <div class="win-controls">
+                <div class="win-btn">_</div>
+                <div class="win-btn">✕</div>
+              </div>
+            </div>
+            
+            <div class="friends-list-box">
+              <!-- Друг 1: Chizh (Детализированная птичка с короной и визором) -->
+              <div class="friend-item">
+                <div class="friend-custom-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <!-- Тело птицы -->
+                    <path d="M4 14 C4 8, 11 6, 17 9 C18 13, 14 19, 7 19 C4 19, 4 16, 4 14 Z" fill="url(#chizhGrad)"/>
+                    <!-- Крыло с перьями -->
+                    <path d="M6 13 Q10 10 13 14 Q9 17 6 13 Z" fill="#1e40af" stroke="#60a5fa" stroke-width="0.8"/>
+                    <!-- Клюв -->
+                    <polygon points="17,10 22,12 17,14" fill="#fbbf24"/>
+                    <!-- Глаз / Визор -->
+                    <rect x="12" y="8.5" width="4" height="2" rx="1" fill="#38bdf8"/>
+                    <circle cx="14" cy="9.5" r="0.6" fill="#fff"/>
+                    <!-- Корона -->
+                    <polygon points="11,6 13,8 15,6 17,8 18,5 11,5" fill="#f59e0b"/>
+                    <defs>
+                      <linearGradient id="chizhGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#60a5fa"/>
+                        <stop offset="100%" stop-color="#2563eb"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="friend-info">
+                  <span class="friend-nick">Chizh</span>
+                  <span class="friend-msg">В сети • Город растёт! 🏙️</span>
+                </div>
+              </div>
+
+              <!-- Друг 2: Packet (Детализированный кибер-пакет с ручками и неоном) -->
+              <div class="friend-item">
+                <div class="friend-custom-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <!-- Тело пакета -->
+                    <rect x="5" y="8" width="14" height="13" rx="2" fill="url(#packetGrad)" stroke="#38bdf8" stroke-width="1"/>
+                    <!-- Веревочные ручки -->
+                    <path d="M9 8 V5 C9 3.5 15 3.5 15 5 V8" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"/>
+                    <!-- Неоновая звезда/эмблема -->
+                    <polygon points="12,11 13,14 16,14.5 13.5,16.5 14.5,19.5 12,18 9.5,19.5 10.5,16.5 8,14.5 11,14" fill="#38bdf8"/>
+                    <!-- Складки пакета -->
+                    <line x1="8" y1="8" x2="8" y2="21" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+                    <line x1="16" y1="8" x2="16" y2="21" stroke="rgba(0,0,0,0.4)" stroke-width="0.8"/>
+                    <defs>
+                      <linearGradient id="packetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#2563eb"/>
+                        <stop offset="100%" stop-color="#0f172a"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="friend-info">
+                  <span class="friend-nick">Packet</span>
+                  <span class="friend-msg">Собирает пакеты 🛍️</span>
+                </div>
+              </div>
+
+              <!-- Друг 3: Folk cat (Детализированный кибер-кот в очках) -->
+              <div class="friend-item">
+                <div class="friend-custom-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <!-- Голова кота -->
+                    <polygon points="5,6 9,12 15,12 19,6 18,17 12,20 6,17" fill="url(#catGrad)"/>
+                    <!-- Ушки внутренние -->
+                    <polygon points="6,7 8,11 6,11" fill="#f43f5e"/>
+                    <polygon points="18,7 16,11 18,11" fill="#f43f5e"/>
+                    <!-- Солнцезащитные кибер-очки -->
+                    <rect x="6.5" y="11" width="11" height="4.5" rx="1.5" fill="#000" stroke="#38bdf8" stroke-width="1"/>
+                    <line x1="7.5" y1="12" x2="11" y2="14.5" stroke="#fff" stroke-width="0.8"/>
+                    <line x1="13" y1="12" x2="16.5" y2="14.5" stroke="#fff" stroke-width="0.8"/>
+                    <!-- Носик и усы -->
+                    <polygon points="12,16 11,17 13,17" fill="#f472b6"/>
+                    <line x1="4" y1="16" x2="8" y2="16.5" stroke="#60a5fa" stroke-width="0.8"/>
+                    <line x1="16" y1="16.5" x2="20" y2="16" stroke="#60a5fa" stroke-width="0.8"/>
+                    <defs>
+                      <linearGradient id="catGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#3b82f6"/>
+                        <stop offset="100%" stop-color="#1e1b4b"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="friend-info">
+                  <span class="friend-nick">Folk cat</span>
+                  <span class="friend-msg">Фармит ChizhBank 🏦</span>
+                </div>
+              </div>
+
+              <!-- Друг 4: lekkzhubBot (Детализированный робот с антенной) -->
+              <div class="friend-item">
+                <div class="friend-custom-icon">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <!-- Антенна с шариком -->
+                    <line x1="12" y1="6" x2="12" y2="2" stroke="#60a5fa" stroke-width="1.5"/>
+                    <circle cx="12" cy="2" r="1.5" fill="#38bdf8"/>
+                    <!-- Голова робота -->
+                    <rect x="4" y="6" width="16" height="15" rx="3" fill="url(#botGrad)" stroke="#38bdf8" stroke-width="1.2"/>
+                    <!-- Уши болты -->
+                    <rect x="2" y="11" width="2" height="5" rx="1" fill="#60a5fa"/>
+                    <rect x="20" y="11" width="2" height="5" rx="1" fill="#60a5fa"/>
+                    <!-- Глаза дисплей -->
+                    <rect x="7" y="9.5" width="4" height="3" rx="0.8" fill="#38bdf8"/>
+                    <rect x="13" y="9.5" width="4" height="3" rx="0.8" fill="#38bdf8"/>
+                    <!-- Решетка рта -->
+                    <line x1="8" y1="16" x2="16" y2="16" stroke="#93c5fd" stroke-width="1"/>
+                    <line x1="10" y1="15" x2="10" y2="17" stroke="#93c5fd" stroke-width="0.8"/>
+                    <line x1="12" y1="15" x2="12" y2="17" stroke="#93c5fd" stroke-width="0.8"/>
+                    <line x1="14" y1="15" x2="14" y2="17" stroke="#93c5fd" stroke-width="0.8"/>
+                    <defs>
+                      <linearGradient id="botGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#1d4ed8"/>
+                        <stop offset="100%" stop-color="#020617"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+                <div class="friend-info">
+                  <span class="friend-nick">lekkzhubBot</span>
+                  <span class="friend-msg">Online: 4 игры активны ⚡</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Кнопка OK без звездочки (выровнена в правом нижнем углу) -->
+          <div class="bottom-action-align-row">
+            <button class="friends-action-btn">OK</button>
+          </div>
+        </div>
+
+        <!-- Окно Global Chat -->
+        <div class="cyber-window widget-panel-window">
+          <div>
+            <div class="window-header">
+              <div class="window-title">GLOBAL CHAT</div>
+              <div class="win-controls">
+                <div class="win-btn">✕</div>
+              </div>
+            </div>
+
+            <div style="padding: 5px 6px 0;">
+              <!-- Мини-эквалайзер -->
+              <div class="winamp-mini-screen">
+                <div class="winamp-time-row">
+                  <span>DSP 13:00</span>
+                  <span>320K</span>
+                </div>
+                <div class="winamp-eq-bars">
+                  <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <!-- Чат -->
+              <div class="chat-stream-box">
+                <div class="chat-row"><span class="chat-user">kamaz 32:</span> го в стакбагс</div>
+                <div class="chat-row"><span class="chat-user">verBLUD52:</span> банк залутал $10M!</div>
+                <div class="chat-row"><span class="chat-user">alex:</span> топ мини аппка 🔥</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Кнопка OK (выровнена симметрично в правом нижнем углу) -->
+          <div class="bottom-action-align-row">
+            <button class="friends-action-btn">OK</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= ВКЛАДКА 2: ИГРЫ (LIBRARY) — ОРИГИНАЛЬНЫЕ ОБЛОЖКИ БЕЗ ОБРЕЗКИ ================= -->
+    <main class="tab-section" id="tab-games">
+      <div class="hero-header-box">
+        <h1 class="chrome-main-title">LIBRARY</h1>
+        <div class="chrome-sub-title">// VIRTUAL WORLD</div>
+      </div>
+
+      <!-- ОКНО: GAME CARDS -->
+      <section class="cyber-window">
+        <div class="window-header">
+          <div class="window-title">GAME CARDS</div>
+          <div class="win-controls">
+            <div class="win-btn">_</div>
+            <div class="win-btn">□</div>
+            <div class="win-btn">✕</div>
+          </div>
+        </div>
+
+        <div class="game-cards-matrix">
+          <!-- Игра 1: ChizhCity (Оригинал без обрезки) -->
+          <div class="cyber-game-card" onclick="openGame('https://t.me/lekkzhubBot/Chizhik')">
+            <div class="game-thumb-frame">
               <img src="https://i.ibb.co/sdcX14kq/389448-D3-02-E6-4-CF6-82-CA-162-CC1-DC4334.jpg" alt="ChizhCity">
             </div>
-            <div class="game-meta">
-              <div class="game-name">ChizhCity</div>
-              <div class="game-desc">ждёт своего Мэра!</div>
-            </div>
+            <div class="card-game-title">ChizhCity</div>
+            <div class="card-game-genre">STRATEGY TYCOON</div>
+            <button class="card-launch-btn">[ LAUNCH ]</button>
           </div>
-          <button class="play-action-btn">Играть</button>
-        </div>
 
-        <!-- Игра 2: StackBags -->
-        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/stak2')">
-          <div class="game-left">
-            <div class="game-icon-wrap">
+          <!-- Игра 2: StackBags (Оригинал без обрезки) -->
+          <div class="cyber-game-card" onclick="openGame('https://t.me/lekkzhubBot/stak2')">
+            <div class="game-thumb-frame">
               <img src="https://i.ibb.co/GfBXTjjs/E8278-B9-F-4-BA3-4-F1-A-B382-A53640880-F28.jpg" alt="StackBags">
             </div>
-            <div class="game-meta">
-              <div class="game-name">StackBags</div>
-              <div class="game-desc">ждёт своего Покупателя!</div>
-            </div>
+            <div class="card-game-title">StackBags</div>
+            <div class="card-game-genre">PHYSICS ARCADE</div>
+            <button class="card-launch-btn">[ LAUNCH ]</button>
           </div>
-          <button class="play-action-btn">Играть</button>
-        </div>
 
-        <!-- Игра 3: DarkStore Legend -->
-        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/darkstore')">
-          <div class="game-left">
-            <div class="game-icon-wrap">
+          <!-- Игра 3: DarkStore Legend (Оригинал без обрезки) -->
+          <div class="cyber-game-card" onclick="openGame('https://t.me/lekkzhubBot/darkstore')">
+            <div class="game-thumb-frame">
               <img src="https://i.ibb.co/KjrJJBWQ/F1-ABB81-C-7-F6-F-4046-886-F-71-A4-A66-AC1-DA.jpg" alt="DarkStore Legend">
             </div>
-            <div class="game-meta">
-              <div class="game-name">DarkStore Legend</div>
-              <div class="game-desc">ждёт своего сборщика!</div>
-            </div>
+            <div class="card-game-title">DarkStore</div>
+            <div class="card-game-genre">CYBER SIMULATOR</div>
+            <button class="card-launch-btn">[ LAUNCH ]</button>
           </div>
-          <button class="play-action-btn">Играть</button>
-        </div>
 
-        <!-- Игра 4: ChizhBank Tycoon (НОВАЯ) -->
-        <div class="game-card" onclick="openGame('https://t.me/lekkzhubBot/chzbnk1_0')">
-          <div class="game-left">
-            <div class="game-icon-wrap">
+          <!-- Игра 4: ChizhBank Tycoon (Оригинальная картинка с аватаром) -->
+          <div class="cyber-game-card" onclick="openGame('https://t.me/lekkzhubBot/chzbnk1_0')">
+            <div class="game-thumb-frame">
               <img src="https://i.ibb.co/SDpWN2W9/44-BD2423-3651-4086-9550-8940-FCF5-C6-D5.jpg" alt="ChizhBank Tycoon">
             </div>
-            <div class="game-meta">
-              <div class="game-name">ChizhBank Tycoon</div>
-              <div class="game-desc">ждёт своего Банкира! 💼</div>
-            </div>
+            <div class="card-game-title">ChizhBank</div>
+            <div class="card-game-genre">BANKING CORE</div>
+            <button class="card-launch-btn">[ LAUNCH ]</button>
           </div>
-          <button class="play-action-btn">Играть</button>
         </div>
+      </section>
+
+      <!-- РАСШИРЕННОЕ ОКНО UPDATES -->
+      <section class="cyber-window updates-expanded-window">
+        <div class="window-header">
+          <div class="window-title">UPDATES // EXPANSION RADAR</div>
+          <div class="win-controls">
+            <div class="win-btn">_</div>
+            <div class="win-btn">✕</div>
+          </div>
+        </div>
+
+        <div class="updates-content-box">
+          <div class="updates-glitch-text">NEW GAMES COMING SOON</div>
+          <div class="updates-sub-text">✦ EXPANDING THE MULTIVERSE • NEXT DROP IN DEV ✦</div>
+          <div style="font-family: var(--font-mono); font-size: 8px; color: #38bdf8; margin-top: 4px; letter-spacing: 1px;">
+            [ SYSTEM INTEGRITY: 100% • 128-BIT ENGINE READY ]
+          </div>
+        </div>
+      </section>
+
+      <div class="downloading-footer-box">
+        <div class="dl-title-row">
+          <span>[ downloading... 87% ]</span>
+          <span>4 TITLES LOADED</span>
+        </div>
+        <div class="dl-blocks-bar">■■■■■■■■■■■■■■■■■■□□□</div>
       </div>
+    </main>
 
-      <div class="bottom-glow"></div>
-    </div>
-
-    <!-- Навигация -->
-    <nav class="nav-bar">
-      <button class="nav-item active" onclick="switchTab('home', this)">Главная</button>
-      <button class="nav-item" onclick="switchTab('games', this)">Игры</button>
+    <!-- ФИКСИРОВАННЫЙ ДОК НАВИГАЦИИ С ГАРАНТИРОВАННЫМ ЗВУКОМ -->
+    <nav class="bottom-cyber-nav">
+      <button class="nav-capsule-btn active" onclick="switchTab('home', this)">
+        <span>[ ГЛАВНАЯ ]</span>
+      </button>
+      <button class="nav-capsule-btn" onclick="switchTab('games', this)">
+        <span>[ ИГРЫ ]</span>
+      </button>
     </nav>
   </div>
 
@@ -483,18 +1265,138 @@
     if (tg) {
       tg.ready();
       tg.expand();
+      if (tg.setHeaderColor) tg.setHeaderColor('#0b1a4a');
+      if (tg.setBackgroundColor) tg.setBackgroundColor('#030818');
     }
 
     const DONATE_INVOICE_URL = "https://t.me/$KBSu_fmfAUsSFwAAWco2j0i_juU";
 
+    /* ================= ФУТУРИСТИЧЕСКИЙ ЗВУКОВОЙ ДВИЖОК 2000-Х ================= */
+    let audioCtx = null;
+
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      return audioCtx;
+    }
+
+    // Разблокировка AudioContext на первый клик/тап в браузере (критично для мобилок)
+    function unlockAudio() {
+      const ctx = getAudioCtx();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume();
+      }
+    }
+    document.addEventListener('pointerdown', unlockAudio, { once: true });
+    document.addEventListener('touchstart', unlockAudio, { once: true });
+    document.addEventListener('click', unlockAudio, { once: true });
+
+    function playSound(type) {
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+
+        if (ctx.state === 'suspended') {
+          ctx.resume().then(() => executeSound(ctx, type));
+        } else {
+          executeSound(ctx, type);
+        }
+      } catch (e) {}
+    }
+
+    function executeSound(ctx, type) {
+      const now = ctx.currentTime;
+
+      if (type === 'click') {
+        // Футуристичный двухтональный лазерный клик
+        const osc1 = ctx.createOscillator();
+        const osc2 = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(1760, now);
+        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.06);
+
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(2640, now);
+        osc2.frequency.exponentialRampToValueAtTime(1320, now + 0.05);
+
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1400, now);
+        filter.Q.setValueAtTime(3.5, now);
+
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+        osc1.connect(filter);
+        osc2.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.07);
+        osc2.stop(now + 0.07);
+      } else if (type === 'launch') {
+        // Глубокий научно-фантастический варп-звук
+        const subOsc = ctx.createOscillator();
+        const warpOsc = ctx.createOscillator();
+        const filter = ctx.createBiquadFilter();
+        const gain = ctx.createGain();
+
+        subOsc.type = 'sine';
+        subOsc.frequency.setValueAtTime(180, now);
+        subOsc.frequency.exponentialRampToValueAtTime(55, now + 0.22);
+
+        warpOsc.type = 'sawtooth';
+        warpOsc.frequency.setValueAtTime(350, now);
+        warpOsc.frequency.exponentialRampToValueAtTime(2200, now + 0.14);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(3200, now);
+        filter.frequency.exponentialRampToValueAtTime(400, now + 0.24);
+
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        subOsc.connect(gain);
+        warpOsc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        subOsc.start(now);
+        warpOsc.start(now);
+        subOsc.stop(now + 0.25);
+        warpOsc.stop(now + 0.25);
+      }
+    }
+
+    function switchTab(tabId, el) {
+      playSound('click');
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      document.querySelectorAll('.tab-section').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.nav-capsule-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+      
+      if (tabId === 'home') {
+        document.querySelectorAll('.nav-capsule-btn')[0].classList.add('active');
+      } else {
+        document.querySelectorAll('.nav-capsule-btn')[1].classList.add('active');
+      }
+    }
+
     function supportAuthor() {
+      playSound('launch');
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
       if (tg?.openInvoice) {
         tg.openInvoice(DONATE_INVOICE_URL, function(status) {
           if (status === 'paid') {
             if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert("Огромное спасибо за поддержку! 🖤⭐");
+            tg.showAlert("Огромное спасибо за поддержку! 🔥🖤");
           }
         });
       } else {
@@ -502,15 +1404,8 @@
       }
     }
 
-    function switchTab(tabId, el) {
-      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-      document.getElementById(`tab-${tabId}`).classList.add('active');
-      el.classList.add('active');
-    }
-
     function openLink(url) {
+      playSound('click');
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       if (tg?.openLink) {
         tg.openLink(url);
@@ -520,6 +1415,7 @@
     }
 
     function openGame(url) {
+      playSound('launch');
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
 
       if (tg?.openTelegramLink && url.startsWith('https://t.me/')) {
